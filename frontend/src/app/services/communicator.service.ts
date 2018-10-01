@@ -3,10 +3,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class Loader {
+export class Communicator {
+    private readonly host = 'localhost:3001';
+
     constructor(private httpClient: HttpClient) {}
 
     loadDesk(n: number): Observable<any> {
-        return this.httpClient.get(`localhost:3001/room/${n}/getStatus`);
+        return this.httpClient.get(this.host + `/room/${n}/getStatus`);
+    }
+
+    startNewGame() {
+        return this.httpClient.get(this.host + `/newGame`)
     }
 }

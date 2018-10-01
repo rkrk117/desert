@@ -1,30 +1,8 @@
-import { CellType, Direction, Character } from './types';
-import { IPlayer, Player, WaterKeeper, Archeologist, Scout, Meteorologist,  } from './players';
-import { Point } from './point';
-
-class Cell {
-    private type: CellType;
-    private sand: number = 0;
-
-    constructor(_type: CellType) {
-        this.sand = 0;
-        this.type = _type;
-    }
-
-    public increaseSand(n: number): void {
-        this.sand += n;
-        if (this.sand < 0) {
-            this.sand = 0;
-        }
-    }
-    public getSand(): number {
-        return this.sand;
-    }
-
-    public getType(): CellType {
-        return this.type;
-    }
-}
+import { CellType, Direction, Character } from '../domain/types';
+import { IPlayer, Player, WaterKeeper, Archeologist, Scout, Meteorologist,  } from '../domain/players';
+import { Point } from '../domain/point';
+import { Cell } from '../domain/cell';
+import { Action, ActionType } from '../domain/action';
 
 export class Desk {
     world: Cell[];
@@ -81,6 +59,7 @@ export class Box {
     desk: Desk;
     storm: number;
     players: IPlayer[] = [];
+    log: Action[];
     constructor(difficluty: number) {
         this.desk = new Desk();
         this.cardStack = buildCardStack();
@@ -125,9 +104,12 @@ export class Box {
         };
     }
 
-    // TODO for players in tunnels
     drinkWater(): void {
-        this.players.forEach(pl => pl.addWater(-1));
+        this.players.forEach(pl => {
+            if (this.desk.getCell(pl.getPosition()).getType() !== CellType.Tunnel) {
+                pl.addWater(-1);
+            }
+        });
     }
 
     // TODO gameover for too big storm

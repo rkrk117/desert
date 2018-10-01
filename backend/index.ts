@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as box from './box';
-import { CellType, Direction, Character } from './types';
+import { CellType, Direction, Character } from '../domain/types';
 
 let app = express();
 
@@ -43,7 +43,7 @@ app.get(/.room.[0-9]+.getPlayer..+/, function(req, res) {
     if (!worlds[Number(room)]) {
         res.sendStatus(404);
     }
-    let player = worlds[Number(room)].getPlayer(<Character> (Number(character)));
+    let player = worlds[Number(room)].getPlayerByCharacter(<Character> (Number(character)));
     if (player) {
         res.json(player);
     } else {

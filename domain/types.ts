@@ -33,5 +33,7 @@ export enum Character {
     Meteorologist = 2,
     Navigator = 3,
     Explorer = 4,
-    Scout = 5
+    Scout = 5,
+    Storm = 6,
+    box = 7
 }
